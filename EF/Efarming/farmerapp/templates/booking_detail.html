@@ -1,0 +1,72 @@
+{% extends 'navigation.html' %}
+{% load custom_filters %}
+{% block body %}
+
+<center><h2 style="color:red;margin-top:2%">View Booking Detail</h2></center><hr>
+
+<div class="container" style="border:1px solid white">
+  <div class="row">
+
+    <div class="col-md-6" style="height:100px;">
+      <center>
+        <a href="{% url 'view_product' 0 %}" 
+           style="margin-top:1%;width:100%" 
+           class="btn btn-lg btn-info text-light text-capitalize">
+          <ion-icon style="margin-right:8px" name="pricetags"></ion-icon>Continue Shopping
+        </a>
+      </center>
+    </div>
+
+    <div class="col-md-6" style="height:100px;">
+      <center>
+        <a style="margin-top:1%;width:100%;border:1px solid black" 
+           class="btn btn-default btn-lg text-dark text-capitalize">
+          Total : ₹{{ total }}
+        </a>
+      </center>
+    </div>
+
+  </div>
+</div>
+
+{% if booked_items %}
+  {% for item in booked_items %}
+    <center>
+      <style>
+        .container-booking {
+          border: 1px solid black;
+          border-radius: 6px;
+          margin-bottom: 5%;
+          width: 80%;
+          margin-top: 2%;
+          height: 150px;
+        }
+      </style>
+
+      <div class="container-booking">
+        <div class="row" style="height:90%">
+          <div class="col-md-4" style="height:120px;">
+            <img src="{{ item.product.image.url }}" 
+                 alt="{{ item.product.name }}" 
+                 style="width:30%;height:100px;border:1px solid darkgray;margin-top:5%">
+          </div>
+
+          <div class="col-md-4" style="padding-top: 30px;">
+            <p><strong>{{ item.product.name }}</strong></p>
+            <p>Price: Rs. {{ item.product.price }}</p>
+            <p>Quantity: {{ item.quantity }}</p>
+            <p>Subtotal: Rs. {{ item.product.price|mul:item.quantity }}</p>
+          </div>
+
+          <div class="col-md-4" style="height:100px; padding-top: 50px;">
+            <h4 style="color:blue;">Booked Successfully</h4>
+          </div>
+        </div>
+      </div>
+    </center>
+  {% endfor %}
+{% else %}
+  <p>No products found in this booking.</p>
+{% endif %}
+
+{% endblock %}

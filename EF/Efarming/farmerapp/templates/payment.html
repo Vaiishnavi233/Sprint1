@@ -1,0 +1,99 @@
+{% extends 'navigation.html' %}
+{% load static %}
+{% block body %}
+
+<div class="container">
+<center><h3 style="color:red">PAYMENT DETAIL</h3><hr></center>
+<center>
+<div style="width:55%;background-color:lightgrey" class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4 col-md-4">
+                <img style="width:150px;height:100px" src="{% static 'images/atm1.jpg' %}">
+            </div>
+            <div class="col-xs-4 col-md-4">
+                <img style="width:150px;height:100px" src="{% static 'images/atm2.jpg' %}">
+            </div>
+            <div class="col-xs-4 col-md-4">
+                <img style="width:150px;height:100px" src="{% static 'images/atm3.jpg' %}">
+            </div>
+        </div>
+
+        <form action="{% url 'original_payment' %}" method="POST">
+            {% csrf_token %}
+
+            <!-- CARD DETAILS -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>CARD NUMBER</label>
+                        <input type="tel" class="form-control" name="cardnumber" placeholder="Valid Card Number" required autofocus />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class=" col-md-6">
+                    <div class="form-group">
+                        <label>EXPIRY DATE</label>
+                        <input type="tel" class="form-control" name="cardex" placeholder="MM / YY" required />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>CVC CODE</label>
+                        <input type="tel" class="form-control" name="cvc" placeholder="CVC" required />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Card Holder Name</label>
+                        <input type="text" class="form-control" name="card_holder" placeholder="Card Holder Name" required />
+                    </div>
+                </div>
+            </div>
+
+            <!-- DISPLAY TOTAL AMOUNT -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Amount In Rs.</label>
+                        <input type="text" class="form-control" value="{{ total }}" name="amount" readonly />
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="submit" class="btn btn-success btn-lg btn-block" name="payment" value="Make Payment">
+                </div>
+                <div class="col-md-6">
+                   {% if cart %}
+    <a href="{% url 'cash_on_delivery' cart.id %}" class="btn btn-success btn-lg btn-block">
+        <h6>Cash On Delivery</h6>
+    </a>
+{% else %}
+<!-- <p>No cart found. Please add items to cart first.</p>-->
+{% endif %}
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</center>
+</div>
+
+<!-- ALERT ON SUCCESS -->
+{% if error %}
+<script>
+    alert('Booking order Successfully');
+    window.location = "{% url 'view_booking' %}";
+</script>
+{% endif %}
+
+{% endblock %}
